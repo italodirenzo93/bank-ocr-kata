@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "./bin",
+    "sourceMap": true,
+    "target": "ES2017"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
