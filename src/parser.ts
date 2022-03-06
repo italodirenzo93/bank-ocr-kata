@@ -1,5 +1,5 @@
 // prettier-ignore
-export const characterMap = new Map<string, number>([
+export const characterMap: ReadonlyMap<string, number> = new Map([
   [
     ' _ ' +
     '| |' +
@@ -62,8 +62,9 @@ export const characterMap = new Map<string, number>([
   ],
 ]);
 
-const SPACES_PER_CHARACTER = 3;
-const CHARACTERS_PER_LINE = 27;
+export const SPACES_PER_CHARACTER = 3;
+export const CHARACTERS_PER_LINE = 27;
+export const LINES_PER_ACCOUNT_NUMBER = 3;
 
 /**
  * Transforms an encoded account number into a decimal representation
@@ -71,9 +72,17 @@ const CHARACTERS_PER_LINE = 27;
  * @returns Decoded account number in decimal form
  */
 export function decodeAccountNumber(encoded: string): string {
+  // Validate input string
+  if (encoded.length !== CHARACTERS_PER_LINE * LINES_PER_ACCOUNT_NUMBER) {
+    throw new RangeError(
+      `Encoded account number must be exactly ${LINES_PER_ACCOUNT_NUMBER} lines long and have ${CHARACTERS_PER_LINE} characters each.`
+    );
+  }
+
   let result = '';
 
-  const getIndex = (line: number, char: number) => line * CHARACTERS_PER_LINE + char;
+  const getIndex = (line: number, char: number) =>
+    line * CHARACTERS_PER_LINE + char;
 
   for (let char = 0; char < CHARACTERS_PER_LINE; char += SPACES_PER_CHARACTER) {
     const indices = [
@@ -93,7 +102,7 @@ export function decodeAccountNumber(encoded: string): string {
       getIndex(2, char + 2),
     ];
 
-    const encodedNumber = indices.map(i => encoded[i]).join('');
+    const encodedNumber = indices.map((i) => encoded[i]).join('');
 
     result += characterMap.get(encodedNumber) ?? 'X';
   }
