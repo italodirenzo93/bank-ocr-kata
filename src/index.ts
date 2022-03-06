@@ -1,23 +1,24 @@
-import { platform } from 'os';
+import { readFile, writeFile } from 'fs/promises';
 
-/**
- * Transforms an encoded account number into a decimal representation
- * @param encoded Encoded account number to parse
- * @returns Decoded account number in decimal form
- */
-export function decodeAccountNumber(encoded: string): string {
-  const lines = encoded.split('\n').filter((line) => line !== '');
+const inputFile = 'fixtures/use_case_1.txt';
+const outputFile = 'bin/use_case_1.out.txt';
 
-  if (lines.length !== 3)
-    throw new Error(
-      'Encoded account number must be exactly 3 lines of 27 characters each.'
-    );
+async function main() {
+  // Async read contents of file into memory.
+  const fileContents = await readFile(inputFile, {
+    encoding: 'utf8', // specifying an encoding returns the file contents as a string
+  });
 
-  for (let line = 0; line < 3; line++) {
-    for (let character = 0; character < 27; character += 3) {}
-  }
+  const dataToSave = magicalDataTransformer(fileContents);
 
+  // Async write data to a file, replacing the file if it already exists.
+  await writeFile(outputFile, dataToSave, { encoding: 'utf8' });
+}
+
+function magicalDataTransformer(fileContents: string): string {
   return '';
 }
 
-console.log(`Running on ${platform()}`);
+// Program entry
+main();
+
