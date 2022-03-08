@@ -1,8 +1,12 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { LINES_PER_ACCOUNT_NUMBER, decodeAccountNumber } from './parser';
+import {
+  LINES_PER_ACCOUNT_NUMBER,
+  decodeAccountNumber,
+  validateChecksum,
+} from './parser';
 
-const inputFile = 'fixtures/use_case_1.txt';
-const outputFile = 'bin/use_case_1.out.txt';
+const inputFile = 'fixtures/use_case_3.txt';
+const outputFile = 'bin/use_case_3.out.txt';
 
 function main() {
   const fileContents = readFileSync(inputFile, {
@@ -23,7 +27,17 @@ function decodeAccountSheet(fileContents: string): string {
     encodedNumbers.push(lines[line] + lines[line + 1] + lines[line + 2]);
   }
 
-  const decodedNumbers = encodedNumbers.map(decodeAccountNumber);
+  const decodedNumbers = encodedNumbers.map(decodeAccountNumber).map((n) => {
+    if (n.includes('?')) {
+      return `${n} ILL`;
+    }
+
+    if (!validateChecksum(n)) {
+      return `${n} ERR`;
+    }
+
+    return n;
+  });
 
   return decodedNumbers.join('\n');
 }

@@ -104,7 +104,7 @@ export function decodeAccountNumber(encoded: string): string {
 
     const encodedNumber = indices.map((i) => encoded[i]).join('');
 
-    result += characterMap.get(encodedNumber) ?? 'X';
+    result += characterMap.get(encodedNumber) ?? '?';
   }
 
   return result;
