@@ -1,21 +1,37 @@
 import { readFileSync, writeFileSync } from 'fs';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 import {
   LINES_PER_ACCOUNT_NUMBER,
   decodeAccountNumber,
   validateChecksum,
 } from './parser';
 
-const inputFile = 'fixtures/use_case_3.txt';
-const outputFile = 'bin/use_case_3.out.txt';
-
 function main() {
-  const fileContents = readFileSync(inputFile, {
-    encoding: 'utf8', // specifying an encoding returns the file contents as a string
-  });
+  let args = yargs(hideBin(process.argv))
+    .option('input-file', {
+      alias: 'i',
+      demandOption: true,
+      description: 'File containing data set to parse.',
+      type: 'string',
+    })
+    .option('output-file', {
+      alias: 'o',
+      description: 'Name of the file to print the results to.',
+      type: 'string',
+    })
+    .parseSync();
+
+  // Set default output file name if one wasn't provided
+  if (!args.outputFile) {
+    args.outputFile = `${args.inputFile}.out`;
+  }
+
+  const fileContents = readFileSync(args.inputFile, { encoding: 'utf8' });
 
   const dataToSave = decodeAccountSheet(fileContents);
 
-  writeFileSync(outputFile, dataToSave, { encoding: 'utf8' });
+  writeFileSync(args.outputFile, dataToSave, { encoding: 'utf8' });
 }
 
 function decodeAccountSheet(fileContents: string): string {
