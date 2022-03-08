@@ -132,3 +132,13 @@ export function validateChecksum(accountNumber: string): boolean {
 
   return sum % 11 === 0;
 }
+
+export function guessPossibleResults(accountNumber: string): string[] {
+  // Check numbers that come back ERR or ILL
+
+  // If only one possible number combination has a valid checksum, return that as the only array element
+  // If no combination has a valid checksum, return all possible combinations (ambiguous)
+  // If unable to find any possible combination, return an empty array (no possible combinations)
+
+  return [];
+}
