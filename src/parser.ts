@@ -109,3 +109,22 @@ export function decodeAccountNumber(encoded: string): string {
 
   return result;
 }
+
+/**
+ * Validate an account number by calculating a checksum using the following formula - (d1 + 2*d2 + 3*d3 +..+ 9*d9) mod 11 = 0
+ * @param accountNumber Account number under validation
+ * @returns True for valid accounts or false otherwise
+ */
+export function validateChecksum(accountNumber: string): boolean {
+  if (accountNumber.length !== 9) {
+    throw new RangeError('Account number must be exactly 9 digits long.');
+  }
+
+  const reverseDigits = Array.from(accountNumber).map(Number);
+
+  const sum = reverseDigits
+    .reverse()
+    .reduce((prev, current, index) => prev + (index + 1) * current);
+
+  return sum % 11 === 0;
+}
