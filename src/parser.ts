@@ -120,9 +120,13 @@ export function validateChecksum(accountNumber: string): boolean {
     throw new RangeError('Account number must be exactly 9 digits long.');
   }
 
-  const reverseDigits = Array.from(accountNumber).map(Number);
+  const digits = Array.from(accountNumber).map(Number);
 
-  const sum = reverseDigits
+  if (digits.some(isNaN)) {
+    throw new EvalError('Only numerical characters are allowed (0-9).');
+  }
+
+  const sum = digits
     .reverse()
     .reduce((prev, current, index) => prev + (index + 1) * current);
 

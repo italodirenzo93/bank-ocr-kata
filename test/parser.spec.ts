@@ -33,6 +33,10 @@ describe('validateChecksum', () => {
     expect(() => validateChecksum('12345678')).toThrowError(RangeError);
   });
 
+  it('throws EvalError if contains non-digit characters', () => {
+    expect(() => validateChecksum('312m0#989')).toThrowError(EvalError);
+  });
+
   // prettier-ignore
   it.each([
     ['345882865'],
