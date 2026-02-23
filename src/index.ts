@@ -8,7 +8,7 @@ import {
 } from './parser';
 
 function main() {
-  let args = yargs(hideBin(process.argv))
+  const args = yargs(hideBin(process.argv))
     .option('input-file', {
       alias: 'i',
       demandOption: true,
